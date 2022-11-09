@@ -6,8 +6,8 @@ from django.db import models
 class Person(models.Model):
     name = models.CharField(max_length=50)
     bday = models.DateField()
-    # email = models.EmailField()
-    # photo = models.ImageField()
+    email = models.EmailField(null=True, blank=True)
+    photo = models.ImageField(upload_to='person', null=True, blank=True)
     # cv = models.FileField()
 
 
