@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ person.name }}
+{% endblock %}
+
+{% block content %}
+       <!-- Post Content-->
+        <article class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <h2 class="section-heading">
+                            {{ person.name }}
+                            <p></p>
+                            <img src="{{ person.photo.url }}" width="300">
+                        </h2>
+                        <blockquote class="blockquote">
+                            {{ person.bday }}
+                        </blockquote>
+                        <p></p>
+                        {{ person.email }}
+                        <p></p>
+                     </div>
+                </div>
+            </div>
+        </article>
+
+{% endblock %}
+
