@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Оценки
+{% endblock %}
+
+{% block content %}
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <h3 class="post-subtitle">
+                        Результат
+                        <p></p>
+                    </h3>
+                    <!-- Post preview-->
+                        <div class="post-preview">
+                            <blockquote class="blockquote">
+                                {{ object.person }}
+                                {{ object.date }}
+                                {{ object.subject }}
+                                {{ object.mark }}
+                            </blockquote>
+
+                            <a class="btn btn-primary" href="{% url 'educenter:result_update' pk=object.pk %}" >
+                                Изменить
+                            </a>
+                            <a class="btn btn-primary" href="{% url 'educenterapp:result_delete' pk=object.pk %}" >
+                                Удалить
+                            </a>
+                        </div>
+                </div>
+            </div>
+{% endblock %}
+
+
+
+
+

@@ -12,8 +12,10 @@
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <h2 class="section-heading">
                             {{ person.name }}
-                            <p></p>
-                            <img src="{{ person.photo.url }}" width="300">
+                            {% if person.photo %}
+                                <p></p>
+                                <img src="{{ person.photo.url }}" width="300">
+                            {% endif %}
                         </h2>
                         <blockquote class="blockquote">
                             {{ person.bday }}
@@ -21,6 +23,8 @@
                         <p></p>
                         {{ person.email }}
                         <p></p>
+
+                        </div>
                      </div>
                 </div>
             </div>
