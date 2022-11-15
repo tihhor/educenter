@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Результаты
+{% endblock %}
+
+{% block content %}
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <h3 class="post-subtitle">
+                        Результаты
+                        <p></p>
+                    </h3>
+                    <!-- Post preview-->
+                    {% for item in object_list %}
+                        <div class="post-preview">
+                            <a href= "{% url 'educenter:result_detail' pk=item.pk %}">
+                            <blockquote class="blockquote">
+                            {{ item.person }}/
+                            {{ item.date }}/
+                            {{ item.subject }}/
+                            {{ item.mark }}
+                            </blockquote>
+                        </a>
+                    </div>
+                    {% endfor %}
+                    <i></i>
+                    <i class="progress"></i>
+                    <a href="{% url 'educenterapp:result_create' %}" >Добавить результат</a>
+                </div>
+            </div>
+{% endblock %}
+
+
+
