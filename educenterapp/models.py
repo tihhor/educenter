@@ -1,4 +1,6 @@
 from django.db import models
+# from django.contrib.auth.models import User
+from testapp.models import TestUser
 
 class TimeStamp(models.Model):
     create = models.DateTimeField(auto_now_add=True)
@@ -38,11 +40,10 @@ class Result(TimeStamp):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     mark = models.IntegerField()
+    user = models.ForeignKey(TestUser, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.date)+' '+self.person.name+' '+str(self.mark)
-
-
 
 
 

@@ -18,6 +18,8 @@
                                 {{ object.date }}
                                 {{ object.subject }}
                                 {{ object.mark }}
+                                {{ object.user }}
+
                             </blockquote>
 
                             <a class="btn btn-primary" href="{% url 'educenter:result_update' pk=object.pk %}" >

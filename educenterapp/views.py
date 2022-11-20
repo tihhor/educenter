@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
@@ -9,12 +11,14 @@ from django.views.generic import ListView, DetailView, DeleteView, UpdateView, C
 from django.views.generic.base import ContextMixin
 
 
+
 # Create your views here.
 def main_page(request):
     persons = Person.objects.all()
     return render(request, 'educenterapp/index.html', context={'persons': persons})
 
 
+@login_required(login_url='/test/login/')
 def create_person(request):
     if request.method == 'POST':
         form = ContactForm(request.POST, files=request.FILES)
@@ -38,13 +42,11 @@ def create_person(request):
         form = ContactForm()
         return render(request, 'educenterapp/create.html', context={'form': form})
 
+@user_passes_test(lambda u:u.is_superuser, login_url='/test/login/')
 def person(request, id):
     person = Person.objects.get(id=id)
     return render(request, 'educenterapp/person.html', context={'person':person})
 
-# def subject(request):
-#     subjects = Subject.objects.all()
-#     return render(request, 'educenterapp/subject.html', context={'subjects': subjects})
 
 def group(request):
     if request.method == 'POST':
@@ -63,6 +65,7 @@ def result(request):
     if request.method == 'POST':
         form = ResultForm(request.POST)
         if form.is_valid():
+            form.instance.user = request.user
             form.save()
             return HttpResponseRedirect(reverse('educenter:index'))
         else:
@@ -151,9 +154,15 @@ class GroupListView(ListView, NameContextMixin):
         return Group.objects.all()
 
 
-class GroupDetailView(DetailView, NameContextMixin):
+class GroupDetailView(UserPassesTestMixin, DetailView, NameContextMixin):
     model = Group
     template_name = 'educenterapp/group_detail.html'
+    raise_exception = False
+    login_url = 'test:login'
+
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
     def get(self, request, *args, **kwargs):
         self.group_id = kwargs['pk']
@@ -225,11 +234,13 @@ class ResultDetailView(DetailView, NameContextMixin):
     def get_object(self, queryset=None):
         return get_object_or_404(Result, pk=self.result_id)
 
-class ResultCreateView(CreateView):
-    fields = '__all__'
+class ResultCreateView(LoginRequiredMixin, CreateView):
+    fields = ('person', 'subject','mark' ,)
     model = Result
     template_name = 'educenterapp/result_create.html'
     success_url = reverse_lazy('educenter:result_list')
+    login_url = 'test:login'
+
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
@@ -237,6 +248,7 @@ class ResultCreateView(CreateView):
         return context
 
     def form_valid(self, form):
+        form.instance.user = self.request.user
         return super().form_valid(form)
 
     def post(self, request,  *args, **kwargs):
@@ -251,7 +263,7 @@ class ResultDeleteView(DeleteView):
 
 
 class ResultUpdateView(UpdateView):
-    fields = '__all__'
+    fields = ('person', 'subject', 'mark',)
     model = Result
     template_name = 'educenterapp/result_create.html'
     success_url = reverse_lazy('educenter:result_list')
