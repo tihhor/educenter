@@ -1,15 +1,18 @@
 from django.db import models
 
-# Create your models here.
+class TimeStamp(models.Model):
+    create = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)
+    class Meta:
+        abstract = True
 
 # Лица
-class Person(models.Model):
+class Person(TimeStamp):
+
     name = models.CharField(max_length=50)
     bday = models.DateField()
-    # email = models.EmailField()
-    # photo = models.ImageField()
-    # cv = models.FileField()
-
+    email = models.EmailField(null=True, blank=True)
+    photo = models.ImageField(upload_to='person', null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -21,31 +24,19 @@ class Subject(models.Model):
     def __str__(self):
         return self.name
 
-# учебные группы/классы
+# учебные группы
 class Group(models.Model):
     name = models.CharField(max_length=30)
     person = models.ManyToManyField(Person)
-    subject = models.ManyToManyField(Subject)
-
-    def __str__(self):
-        return self.name
-
-# уроки
-class Lesson(models.Model):
-    name = models.CharField(max_length=50)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
 
 # оценки
-class Result(models.Model):
+class Result(TimeStamp):
     date = models.DateField(auto_now_add=True)
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     mark = models.IntegerField()
 
     def __str__(self):
