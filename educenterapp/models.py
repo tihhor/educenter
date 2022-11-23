@@ -19,6 +19,9 @@ class Person(TimeStamp):
     def __str__(self):
         return self.name
 
+    def has_image(self):
+        return (self.photo is not None)
+
 # предметы
 class Subject(models.Model):
     name = models.CharField(max_length=50)

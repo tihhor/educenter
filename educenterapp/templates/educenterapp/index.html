@@ -16,6 +16,9 @@
                             </h2>
                             <h3 class="post-subtitle">
                                 {{ item.bday }}
+                                {% if item.has_image %}
+                                    Есть фото
+                                {% endif %}
                             </h3>
                         </a>
                     </div>
