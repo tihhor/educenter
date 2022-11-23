@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Предметы
+{% endblock %}
+
+{% block content %}
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <h3 class="post-subtitle">
+                        Предметы:
+                        <p></p>
+                    </h3>
+                    <!-- Post preview-->
+                    {% for item in subjects %}
+                    <div class="post-preview">
+{#                        <a href= "{% url 'educenter:subject' id=item.id %}">#}
+                        <blockquote class="blockquote">
+                            {{ item.name }}
+                        </blockquote>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+{% endblock %}
