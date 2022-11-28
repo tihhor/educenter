@@ -1,57 +1,64 @@
 from django.db import models
+# from django.contrib.auth.models import User
+from testapp.models import TestUser
 
-# Create your models here.
+class TimeStamp(models.Model):
+    create = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)
+    class Meta:
+        abstract = True
+
+class ActiveManager(models.Manager):
+    def get_queryset(self):
+        all_objects = super.get_queryset()
+        return all_objects.filter(is_active=True)
 
 # Лица
-class Person(models.Model):
+class Person(TimeStamp):
+
+    objects = models.Manager()
+    active_objects = ActiveManager()
+
     name = models.CharField(max_length=50)
     bday = models.DateField()
-    # email = models.EmailField()
-    # photo = models.ImageField()
-    # cv = models.FileField()
-
+    email = models.EmailField(null=True, blank=True)
+    photo = models.ImageField(upload_to='person', null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
+    def has_image(self):
+        return (self.photo is not None)
 
 # предметы
 class Subject(models.Model):
     name = models.CharField(max_length=50)
-
     def __str__(self):
         return self.name
 
-# учебные группы/классы
+# учебные группы
 class Group(models.Model):
     name = models.CharField(max_length=30)
     person = models.ManyToManyField(Person)
-    subject = models.ManyToManyField(Subject)
-
     def __str__(self):
         return self.name
-
-# уроки
-class Lesson(models.Model):
-    name = models.CharField(max_length=50)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
+    def group_persons(self):
+        persons = self.person.all()
+        result = ';  '.join([item.name for item in persons])
+        return result
 
 # оценки
-class Result(models.Model):
+class Result(TimeStamp):
     date = models.DateField(auto_now_add=True)
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     mark = models.IntegerField()
+    user = models.ForeignKey(TestUser, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.date)+' '+self.person.name+' '+str(self.mark)
-
-
 
 
 
