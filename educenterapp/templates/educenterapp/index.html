@@ -27,6 +27,32 @@
                 <i></i>
                 <i class="progress"></i>
                 <a href="{% url 'educenterapp:create' %}" >Новый ученик</a>
+                    <br></br>
 
+
+                </div>
+                    <div class="clearfix">
+                        <div class="pagination">
+
+                            {% if persons.has_previous %}
+                                <a class="step-links">
+                                <a href="?page={{ persons.previous_page_number }}">Предыдущая/</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Page {{ persons.number }} of {{ persons.paginator.num_pages }}.
+                            </span>
+
+                            {% if persons.has_next %}
+                                <a class="step-links">
+                                <a href="?page={{ persons.next_page_number }}">/Следующая</a>
+                            {% endif %}
+
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+
 {% endblock %}

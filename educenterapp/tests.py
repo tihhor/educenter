@@ -25,6 +25,8 @@ class PersonTestCaseFake(TestCase):
         print('=user=')
         print(user.username, '  ', user.email)
 
+
+
     def test_has_image(self):
         self.assertTrue(self.person.has_image())
         print((self.person.image.name))

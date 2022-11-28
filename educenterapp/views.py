@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Person, Subject, Group, Result
 from .forms import ContactForm, GroupForm, ResultForm
@@ -14,8 +15,21 @@ from django.views.generic.base import ContextMixin
 
 # Create your views here.
 def main_page(request):
-    persons = Person.objects.all()
-    return render(request, 'educenterapp/index.html', context={'persons': persons})
+    # persons = Person.objects.all()
+    persons = Person.objects.filter(is_active=True)
+    paginator = Paginator(persons, 3)
+    page = request.GET.get('page')
+    try:
+        persons = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        persons = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        persons = paginator.page(paginator.num_pages)
+    title = 'классный журнал'
+
+    return render(request, 'educenterapp/index.html', context={'persons': persons, 'title': title})
 
 
 @login_required(login_url='/test/login/')
@@ -209,6 +223,7 @@ class ResultListView(ListView, NameContextMixin):
     model = Result
     template_name = 'educenterapp/result_list.html'
     context_object_name = 'Предметы'
+    paginate_by = 3
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()

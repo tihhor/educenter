@@ -8,13 +8,23 @@ class TimeStamp(models.Model):
     class Meta:
         abstract = True
 
+class ActiveManager(models.Manager):
+    def get_queryset(self):
+        all_objects = super.get_queryset()
+        return all_objects.filter(is_active=True)
+
 # Лица
 class Person(TimeStamp):
+
+    objects = models.Manager()
+    active_objects = ActiveManager()
 
     name = models.CharField(max_length=50)
     bday = models.DateField()
     email = models.EmailField(null=True, blank=True)
     photo = models.ImageField(upload_to='person', null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

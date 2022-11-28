@@ -16,6 +16,7 @@
                                 <p></p>
                                 <img src="{{ person.photo.url }}" width="300">
                             {% endif %}
+
                         </h2>
                         <blockquote class="blockquote">
                             {{ person.bday }}
@@ -23,7 +24,9 @@
                         <p></p>
                         {{ person.email }}
                         <p></p>
-
+                            {% if person.notes %}
+                                {{ person.notes |safe}}
+                            {% endif %}
                         </div>
                      </div>
                 </div>
