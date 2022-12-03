@@ -17,8 +17,8 @@
                             <a href= "{% url 'educenter:result_detail' pk=item.pk %}">
                             <blockquote class="blockquote">
                             {{ item.person }}/
-                            {{ item.date }}/
-                            {{ item.subject }}/
+                            {{ item.date }}
+                                {{item.subject.name}}
                             {{ item.mark }}
                             {{ item.user }}
                             </blockquote>

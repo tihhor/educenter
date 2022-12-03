@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils.functional import cached_property
+
 # from django.contrib.auth.models import User
 from testapp.models import TestUser
 
@@ -31,6 +33,12 @@ class Person(TimeStamp):
 
     def has_image(self):
         return (self.photo is not None)
+
+    @cached_property
+    def get_all_subj(self):
+        subjects = Subject.objects.all()
+        return subjects
+
 
 # предметы
 class Subject(models.Model):

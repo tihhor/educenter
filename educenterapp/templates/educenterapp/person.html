@@ -10,24 +10,40 @@
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
-                        <h2 class="section-heading">
-                            {{ person.name }}
-                            {% if person.photo %}
-                                <p></p>
-                                <img src="{{ person.photo.url }}" width="300">
-                            {% endif %}
 
-                        </h2>
-                        <blockquote class="blockquote">
-                            {{ person.bday }}
-                        </blockquote>
-                        <p></p>
-                        {{ person.email }}
-                        <p></p>
-                            {% if person.notes %}
-                                {{ person.notes |safe}}
-                            {% endif %}
-                        </div>
+                        {% with all_subj=person.get_all_subj %}
+
+                            {% for subj in all_subj %}
+                                {{ subj }}
+                                <br>
+                            {% endfor %}
+
+                            <h2 class="section-heading">
+                                {{ person.name }}
+                                {% if person.photo %}
+                                    <p></p>
+                                    <img src="{{ person.photo.url }}" width="300">
+                                {% endif %}
+
+                            </h2>
+                            <blockquote class="blockquote">
+                                {{ person.bday }}
+                            </blockquote>
+                            <p></p>
+                            {{ person.email }}
+                            <p></p>
+                                {% if person.notes %}
+                                    {{ person.notes |safe}}
+                                {% endif %}
+                            </div>
+                            <p></p>
+                            {% for subj in all_subj %}
+                                {{ subj }}
+                                <br>
+                            {% endfor %}
+
+                        {% endwith %}
+
                      </div>
                 </div>
             </div>

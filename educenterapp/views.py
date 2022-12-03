@@ -10,6 +10,7 @@ from .forms import ContactForm, GroupForm, ResultForm
 from django.core.mail import send_mail
 from django.views.generic import ListView, DetailView, DeleteView, UpdateView, CreateView
 from django.views.generic.base import ContextMixin
+from django.views.decorators.cache import cache_page
 
 
 
@@ -17,7 +18,7 @@ from django.views.generic.base import ContextMixin
 def main_page(request):
     # persons = Person.objects.all()
     persons = Person.objects.filter(is_active=True)
-    paginator = Paginator(persons, 3)
+    paginator = Paginator(persons, 300)
     page = request.GET.get('page')
     try:
         persons = paginator.page(page)
@@ -59,6 +60,9 @@ def create_person(request):
 @user_passes_test(lambda u:u.is_superuser, login_url='/test/login/')
 def person(request, id):
     person = Person.objects.get(id=id)
+    all_subjects = person.get_all_subj
+    for item in all_subjects:
+        print(item.name)
     return render(request, 'educenterapp/person.html', context={'person':person})
 
 
@@ -219,11 +223,12 @@ class GroupUpdateView(UpdateView):
     success_url = reverse_lazy('educenter:group_list')
 
 
+# @cache_page(60)
 class ResultListView(ListView, NameContextMixin):
     model = Result
     template_name = 'educenterapp/result_list.html'
     context_object_name = 'Предметы'
-    paginate_by = 3
+    paginate_by = 300
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
@@ -231,7 +236,8 @@ class ResultListView(ListView, NameContextMixin):
         return context
 
     def get_queryset(self):
-        return Result.objects.all()
+        return Result.objects.select_related('subject', 'user', 'person').all()
+        # return Result.objects.all()
 
 class ResultDetailView(DetailView, NameContextMixin):
     model = Result
