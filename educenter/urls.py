@@ -17,12 +17,21 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework import routers
+from educenterapp.api_views import SubjectViewSet, ResultViewSet, PersonViewSet
+
+router = routers.DefaultRouter()
+router.register(r'subject', SubjectViewSet)
+router.register(r'result', ResultViewSet)
+router.register(r'person', PersonViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('educenterapp.urls', namespace='educenter')),
     path('test/', include('testapp.urls', namespace='test')),
-]
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/v0/', include(router.urls)),]
 
 if settings.DEBUG:
     import debug_toolbar
