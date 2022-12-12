@@ -18,12 +18,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
-from educenterapp.api_views import SubjectViewSet, ResultViewSet, PersonViewSet
+from educenterapp.api_views import SubjectViewSet, ResultViewSet, PersonViewSet, GroupViewSet
 
 router = routers.DefaultRouter()
 router.register(r'subject', SubjectViewSet)
 router.register(r'result', ResultViewSet)
 router.register(r'person', PersonViewSet)
+router.register(r'group', GroupViewSet)
 
 
 urlpatterns = [

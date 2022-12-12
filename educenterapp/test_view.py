@@ -6,7 +6,6 @@ from testapp.models import TestUser
 
 from .models import Person, Group, Result
 
-
 class OpenViewTest(TestCase):
 
     def setUp(self):

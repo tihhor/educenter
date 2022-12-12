@@ -8,6 +8,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
 
+
         <title>{% block title %}{% endblock %}</title>
 
         <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}" />
@@ -42,6 +43,7 @@
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'educenterapp:group_list' %}">Группы</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'educenterapp:result_list' %}">Результаты</a></li>
                         {% if user.is_authenticated %}
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'testapp:profile' pk=user.pk %}"><Профиль></Профиль></a></li>
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'testapp:logout' %}">Выход</a></li>
                         {% else %}
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'testapp:login' %}">Вход</a></li>

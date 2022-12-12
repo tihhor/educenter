@@ -1,5 +1,5 @@
 from django.conf.urls import include
-from .models import Subject, Result, Person
+from .models import Subject, Result, Person, Group
 from rest_framework import routers, serializers, viewsets
 
 
@@ -10,16 +10,18 @@ class SubjectSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ResultSerializer(serializers.HyperlinkedModelSerializer):
-    # result = serializers.HyperlinkedRelatedField(many=True, view_name='result-detail', read_only=True)
     class Meta:
         model = Result
         fields = ['person', 'subject', 'mark']
-        # lookup_field = 'mark'
-        # extra_kwargs = {
-        #     'url': {'lookup_field': 'mark'}
-        # }
+
 
 class PersonSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Person
         fields = '__all__'
+
+class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    person = serializers.StringRelatedField(many=True)
+    class Meta:
+        model = Group
+        fields = ['name', 'person']
