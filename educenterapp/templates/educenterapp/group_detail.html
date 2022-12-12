@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Группы
+{% endblock %}
+
+{% block content %}
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <h3 class="post-subtitle">
+                        {{ name }}:
+                        <p></p>
+                    </h3>
+                    <!-- Post preview-->
+                        <div class="post-preview">
+                            <blockquote class="blockquote">
+                                <h4>
+                                {{ object.name }}
+                                </h4>
+                            </blockquote>
+
+                            {% for item in persons %}
+                                {{ item.name }}
+                                 <ul></ul>
+                            {% endfor %}
+                            <p></p>
+
+                            <a class="btn btn-primary" href="{% url 'educenter:group_update' pk=object.pk %}" >
+                                Изменить
+                            </a>
+                            <a class="btn btn-primary" href="{% url 'educenterapp:group_delete' pk=object.pk %}" >
+                                Удалить
+                            </a>
+                        </div>
+                </div>
+            </div>
+{% endblock %}
+
+
+
+
+

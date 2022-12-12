@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from educenterapp.models import Person, Group, Subject, Lesson, Result
+from educenterapp.models import Person, Group, Subject, Result
 import datetime, random
 
 class Command(BaseCommand):
